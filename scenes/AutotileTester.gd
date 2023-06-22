@@ -1,13 +1,5 @@
 extends TilePlacerStateMachine
 
-#enum TOOLS {
-#	NONE,
-#	DRAW,
-#	ERASE,
-#	LINE,
-#	RECT,
-#}
-
 const GridLighter := preload("res://scenes/editor/GridLighter.tscn")
 const DIRECTIONS := [
 	Vector2.UP,
