@@ -127,8 +127,6 @@ func draw_rect_tiles(p1: Vector2, p2: Vector2, tile: int) -> void:
 
 
 func get_tiles_between_points(p1: Vector2, p2: Vector2) -> Array:
-	if p1 == p2:
-		return []
 	p1 = world_to_map(p1)
 	p2 = world_to_map(p2)
 	var dx: int = int(abs(p1.x - p2.x))
