@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://scenes/editor/tester_tileset.tres" type="TileSet" id=1]
 [ext_resource path="res://scenes/AutotileTester.gd" type="Script" id=2]
 [ext_resource path="res://scenes/editor/GridLighter.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/editor/Grid.tscn" type="PackedScene" id=4]
+[ext_resource path="res://scenes/HintDraw.gd" type="Script" id=5]
 
 [node name="AutotileTester" type="TileMap"]
 tile_set = ExtResource( 1 )
@@ -20,14 +21,5 @@ energy = 1.0
 visible = false
 polygon = PoolVector2Array( 0, 0, 0, 0, 0, 0, 0, 0 )
 
-[node name="DeleteRectHint" type="ColorRect" parent="."]
-visible = false
-margin_right = 40.0
-margin_bottom = 40.0
-color = Color( 1, 0, 0, 0.392157 )
-
-[node name="DrawRectHint" type="ColorRect" parent="."]
-visible = false
-margin_right = 40.0
-margin_bottom = 40.0
-color = Color( 1, 1, 1, 0.392157 )
+[node name="HintDraw" type="Node2D" parent="."]
+script = ExtResource( 5 )

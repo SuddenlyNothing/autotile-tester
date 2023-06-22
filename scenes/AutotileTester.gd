@@ -19,9 +19,12 @@ var tile_light_enabled := true
 var has_previous_pos := false
 var previous_pos := Vector2()
 
+var hint_start_tile := Vector2()
+
 onready var grid_lighter := $GridLighter
 onready var texture := tile_set.tile_get_texture(0)
 onready var select := $Select
+onready var hint_draw := $HintDraw
 
 
 func _ready() -> void:
@@ -60,18 +63,19 @@ func _enter_state(new_state: String, old_state) -> void:
 	match new_state:
 		states.idle:
 			has_previous_pos = false
+			hint_draw.update()
 		states.draw:
 			pass
 		states.erase:
 			pass
 		states.rect_draw:
-			pass
+			hint_start_tile = world_to_map(get_global_mouse_position())
 		states.rect_erase:
-			pass
+			hint_start_tile = world_to_map(get_global_mouse_position())
 
 
 func _exit_state(old_state, new_state: String) -> void:
-	match new_state:
+	match old_state:
 		states.idle:
 			pass
 		states.draw:
@@ -79,9 +83,11 @@ func _exit_state(old_state, new_state: String) -> void:
 		states.erase:
 			pass
 		states.rect_draw:
-			pass
+			draw_rect_tiles(hint_start_tile,
+					world_to_map(get_global_mouse_position()), 0)
 		states.rect_erase:
-			pass
+			draw_rect_tiles(hint_start_tile,
+					world_to_map(get_global_mouse_position()), -1)
 
 
 func _process(delta: float) -> void:
@@ -92,9 +98,46 @@ func _process(delta: float) -> void:
 		states.erase:
 			draw_tile(-1)
 		states.rect_draw:
-			pass
+			hint_draw.update()
 		states.rect_erase:
-			pass
+			hint_draw.update()
+
+
+func get_world_rect_bounds(p1: Vector2, p2: Vector2) -> Rect2:
+	var x := p1.x
+	var y := p1.y
+	var dx := p2.x - p1.x
+	var dy := p2.y - p1.y
+	if dx < 0:
+		x += 1
+		dx -= 1
+	else:
+		dx += 1
+	if dy < 0:
+		y += 1
+		dy -= 1
+	else:
+		dy += 1
+	return Rect2(x * cell_size.x, y * cell_size.y,
+			dx * cell_size.x, dy * cell_size.y).abs()
+
+
+func get_map_rect_bounds(p1: Vector2, p2: Vector2) -> Rect2:
+	var x := p1.x
+	var y := p1.y
+	var dx := p2.x - p1.x
+	var dy := p2.y - p1.y
+	if dx < 0:
+		x += 1
+		dx -= 1
+	else:
+		dx += 1
+	if dy < 0:
+		y += 1
+		dy -= 1
+	else:
+		dy += 1
+	return Rect2(x, y, dx, dy).abs()
 
 
 func draw_tile(tile: int) -> void:
@@ -123,10 +166,8 @@ func get_tiles_between_points(p1: Vector2, p2: Vector2) -> Array:
 	p2 = world_to_map(p2)
 	var dx: int = int(abs(p1.x - p2.x))
 	var dy: int = int(abs(p1.y - p2.y))
-	
 	var sx := sign(p2.x - p1.x)
 	var sy := sign(p2.y - p1.y)
-	
 	var x := p1.x
 	var y := p1.y
 	
@@ -145,7 +186,6 @@ func get_tiles_between_points(p1: Vector2, p2: Vector2) -> Array:
 		sy = temp
 	
 	var error := 2 * dy - dx
-	
 	var points := []
 	while true:
 		if is_steep:
