@@ -67,8 +67,7 @@ func _get_transition(event: InputEvent):
 func _enter_state(new_state: String, old_state) -> void:
 	match new_state:
 		states.idle:
-#			has_previous_pos = false
-			pass
+			has_previous_pos = false
 		states.draw:
 			pass
 		states.erase:
@@ -128,27 +127,51 @@ func draw_rect_tiles(p1: Vector2, p2: Vector2, tile: int) -> void:
 
 
 func get_tiles_between_points(p1: Vector2, p2: Vector2) -> Array:
-	var tile_p1 := world_to_map(p1)
-	var tile_p2 := world_to_map(p2)
-	if tile_p1 == tile_p2:
+	if p1 == p2:
 		return []
-	var tiles := []
+	p1 = world_to_map(p1)
+	p2 = world_to_map(p2)
+	var dx: int = int(abs(p1.x - p2.x))
+	var dy: int = int(abs(p1.y - p2.y))
+	
+	var sx := sign(p2.x - p1.x)
+	var sy := sign(p2.y - p1.y)
+	
+	var x := p1.x
+	var y := p1.y
+	
+	var is_steep := dy > dx
+	if is_steep:
+		var temp := dx
+		dx = dy
+		dy = temp
+		
+		temp = x
+		x = y
+		y = temp
+		
+		temp = sx
+		sx = sy
+		sy = temp
+	
+	var error := 2 * dy - dx
+	
+	var points := []
 	while true:
-		var add_tile: Vector2 = tile_p1 + DIRECTIONS[0]
-		var min_dist: float = (tile_p1 + DIRECTIONS[0])\
-				.distance_squared_to(tile_p2)
-		for i in range(1, len(DIRECTIONS)):
-			var new_tile: Vector2 = tile_p1 + DIRECTIONS[i]
-			var new_tile_dist: float = (tile_p1 + DIRECTIONS[i].normalized())\
-					.distance_squared_to(tile_p2)
-			if new_tile_dist < min_dist:
-				min_dist = new_tile_dist
-				add_tile = new_tile
-		if add_tile == tile_p2:
-			break
-		tiles.append(add_tile)
-		tile_p1 = add_tile
-	return tiles
+		if is_steep:
+			points.append(Vector2(y, x))
+			if Vector2(y, x) == p2:
+				break
+		else:
+			points.append(Vector2(x, y))
+			if Vector2(x, y) == p2:
+				break
+		if error >= 0:
+			y += sy
+			error -= dx
+		x += sx
+		error += dy
+	return points
 
 
 func set_cellv(pos: Vector2, tile: int, flip_x: bool = false,
