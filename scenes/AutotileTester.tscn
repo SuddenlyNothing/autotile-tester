@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://scenes/editor/tester_tileset.tres" type="TileSet" id=1]
+[ext_resource path="res://scenes/AutotileTester.gd" type="Script" id=2]
+[ext_resource path="res://scenes/editor/GridLighter.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/editor/Grid.tscn" type="PackedScene" id=4]
+
+[node name="AutotileTester" type="TileMap"]
+tile_set = ExtResource( 1 )
+cell_size = Vector2( 24, 24 )
+format = 1
+script = ExtResource( 2 )
+
+[node name="GridLighter" parent="." instance=ExtResource( 3 )]
+energy = 1.0
+
+[node name="Grid" parent="." instance=ExtResource( 4 )]
+
+[node name="Select" type="Polygon2D" parent="."]
+visible = false
+polygon = PoolVector2Array( 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[node name="HintTiles" type="TileMap" parent="."]
+self_modulate = Color( 1, 1, 1, 0.392157 )
+tile_set = ExtResource( 1 )
+cell_size = Vector2( 24, 24 )
+format = 1

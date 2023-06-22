@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://scenes/editor/GridSprite.gd" type="Script" id=2]
+
+[sub_resource type="CanvasItemMaterial" id=4]
+light_mode = 2
+
+[node name="Grid" type="ParallaxBackground"]
+layer = 0
+
+[node name="GridSprite" type="ParallaxLayer" parent="."]
+light_mask = 2
+material = SubResource( 4 )
+motion_mirroring = Vector2( 1032, 600 )
+script = ExtResource( 2 )
+camera_size = Vector2( 1032, 600 )

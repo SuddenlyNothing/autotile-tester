@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=2]
+
+[sub_resource type="Gradient" id=1]
+interpolation_mode = 2
+offsets = PoolRealArray( 0, 0.812849 )
+colors = PoolColorArray( 0.524597, 0.524597, 0.524597, 1, 0, 0, 0, 1 )
+
+[sub_resource type="GradientTexture2D" id=2]
+gradient = SubResource( 1 )
+width = 150
+height = 150
+fill = 1
+fill_from = Vector2( 0.5, 0.5 )
+fill_to = Vector2( 0.8, 0 )
+
+[node name="GridLighter" type="Light2D"]
+texture = SubResource( 2 )
+energy = 0.7
+range_item_cull_mask = 2

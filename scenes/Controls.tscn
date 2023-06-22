@@ -1,0 +1,262 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://scenes/Controls.gd" type="Script" id=1]
+[ext_resource path="res://assets/temp_tiles.png" type="Texture" id=2]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.231373, 0.223529, 0.262745, 1 )
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color( 0.184314, 0.176471, 0.211765, 1 )
+border_blend = true
+corner_radius_bottom_right = 3
+
+[node name="Controls" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_vertical_guides_": [ 10.0, 130.0, 70.0 ]
+}
+
+[node name="FileDialog" type="FileDialog" parent="."]
+unique_name_in_owner = true
+margin_left = 50.0
+margin_top = 50.0
+margin_right = 974.0
+margin_bottom = 580.0
+rect_min_size = Vector2( 400, 140 )
+window_title = "Open a File"
+resizable = true
+mode = 0
+access = 2
+filters = PoolStringArray( "*.png" )
+
+[node name="AcceptDialog" type="AcceptDialog" parent="."]
+unique_name_in_owner = true
+margin_right = 83.0
+margin_bottom = 58.0
+dialog_text = "Please select a file with a .png extension"
+
+[node name="M" type="MarginContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = -824.0
+margin_bottom = -324.0
+rect_min_size = Vector2( 200, 600 )
+mouse_filter = 2
+custom_constants/margin_right = 10
+
+[node name="V" type="VBoxContainer" parent="M"]
+margin_right = 190.0
+margin_bottom = 600.0
+mouse_filter = 2
+custom_constants/separation = 0
+
+[node name="Panel" type="Panel" parent="M/V"]
+margin_right = 190.0
+margin_bottom = 180.0
+rect_min_size = Vector2( 0, 180 )
+custom_styles/panel = SubResource( 1 )
+
+[node name="M" type="MarginContainer" parent="M/V/Panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+custom_constants/margin_right = 3
+custom_constants/margin_top = 3
+custom_constants/margin_left = 3
+custom_constants/margin_bottom = 3
+
+[node name="TilesTexture" type="TextureRect" parent="M/V/Panel/M"]
+unique_name_in_owner = true
+margin_left = 3.0
+margin_top = 3.0
+margin_right = 187.0
+margin_bottom = 177.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 2 )
+expand = true
+stretch_mode = 6
+
+[node name="M2" type="MarginContainer" parent="M/V"]
+margin_top = 180.0
+margin_right = 190.0
+margin_bottom = 600.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/margin_right = 50
+
+[node name="ColorRect" type="ColorRect" parent="M/V/M2"]
+margin_right = 140.0
+margin_bottom = 420.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+color = Color( 0.243137, 0.231373, 0.27451, 1 )
+
+[node name="M" type="MarginContainer" parent="M/V/M2"]
+margin_right = 140.0
+margin_bottom = 420.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/margin_right = 10
+custom_constants/margin_top = 10
+custom_constants/margin_left = 10
+custom_constants/margin_bottom = 10
+
+[node name="V" type="VBoxContainer" parent="M/V/M2/M"]
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 130.0
+margin_bottom = 410.0
+mouse_filter = 2
+custom_constants/separation = 10
+
+[node name="S" type="HSeparator" parent="M/V/M2/M/V"]
+margin_right = 120.0
+margin_bottom = 4.0
+mouse_filter = 2
+
+[node name="ChangeFile" type="VBoxContainer" parent="M/V/M2/M/V"]
+margin_top = 14.0
+margin_right = 120.0
+margin_bottom = 70.0
+
+[node name="ChangeFile" type="Button" parent="M/V/M2/M/V/ChangeFile"]
+margin_right = 120.0
+margin_bottom = 20.0
+text = "Change File"
+
+[node name="Label" type="Label" parent="M/V/M2/M/V/ChangeFile"]
+margin_top = 24.0
+margin_right = 120.0
+margin_bottom = 38.0
+text = "Current File:"
+align = 1
+
+[node name="CurrentFile" type="Label" parent="M/V/M2/M/V/ChangeFile"]
+unique_name_in_owner = true
+margin_top = 42.0
+margin_right = 120.0
+margin_bottom = 56.0
+text = "temp_tiles.png"
+align = 1
+autowrap = true
+
+[node name="S2" type="HSeparator" parent="M/V/M2/M/V"]
+margin_top = 80.0
+margin_right = 120.0
+margin_bottom = 84.0
+mouse_filter = 2
+
+[node name="DisplayGrid" type="VBoxContainer" parent="M/V/M2/M/V"]
+margin_top = 94.0
+margin_right = 120.0
+margin_bottom = 204.0
+
+[node name="Label" type="Label" parent="M/V/M2/M/V/DisplayGrid"]
+margin_right = 120.0
+margin_bottom = 14.0
+text = "Display Grid:"
+
+[node name="V" type="VBoxContainer" parent="M/V/M2/M/V/DisplayGrid"]
+margin_top = 18.0
+margin_right = 120.0
+margin_bottom = 62.0
+
+[node name="H" type="HBoxContainer" parent="M/V/M2/M/V/DisplayGrid/V"]
+margin_right = 120.0
+margin_bottom = 24.0
+
+[node name="Label" type="Label" parent="M/V/M2/M/V/DisplayGrid/V/H"]
+margin_top = 5.0
+margin_right = 66.0
+margin_bottom = 19.0
+text = "On Mouse"
+
+[node name="MouseGrid" type="CheckBox" parent="M/V/M2/M/V/DisplayGrid/V/H"]
+margin_left = 96.0
+margin_right = 120.0
+margin_bottom = 24.0
+size_flags_horizontal = 10
+pressed = true
+
+[node name="MouseStrength" type="HSlider" parent="M/V/M2/M/V/DisplayGrid/V"]
+margin_top = 28.0
+margin_right = 120.0
+margin_bottom = 44.0
+max_value = 1.4
+step = 0.1
+value = 0.7
+tick_count = 5
+
+[node name="V2" type="VBoxContainer" parent="M/V/M2/M/V/DisplayGrid"]
+margin_top = 66.0
+margin_right = 120.0
+margin_bottom = 110.0
+
+[node name="H2" type="HBoxContainer" parent="M/V/M2/M/V/DisplayGrid/V2"]
+margin_right = 120.0
+margin_bottom = 24.0
+
+[node name="Label" type="Label" parent="M/V/M2/M/V/DisplayGrid/V2/H2"]
+margin_top = 5.0
+margin_right = 53.0
+margin_bottom = 19.0
+text = "On Tiles"
+
+[node name="TilesGrid" type="CheckBox" parent="M/V/M2/M/V/DisplayGrid/V2/H2"]
+margin_left = 96.0
+margin_right = 120.0
+margin_bottom = 24.0
+size_flags_horizontal = 10
+pressed = true
+
+[node name="TilesStrength" type="HSlider" parent="M/V/M2/M/V/DisplayGrid/V2"]
+margin_top = 28.0
+margin_right = 120.0
+margin_bottom = 44.0
+max_value = 1.4
+step = 0.1
+value = 0.7
+tick_count = 5
+
+[node name="S3" type="HSeparator" parent="M/V/M2/M/V"]
+margin_top = 214.0
+margin_right = 120.0
+margin_bottom = 218.0
+mouse_filter = 2
+
+[node name="OnTop" type="VBoxContainer" parent="M/V/M2/M/V"]
+margin_top = 228.0
+margin_right = 120.0
+margin_bottom = 259.0
+
+[node name="H" type="HBoxContainer" parent="M/V/M2/M/V/OnTop"]
+margin_right = 120.0
+margin_bottom = 31.0
+
+[node name="Label" type="Label" parent="M/V/M2/M/V/OnTop/H"]
+margin_right = 92.0
+margin_bottom = 31.0
+size_flags_horizontal = 3
+text = "Keep Window on Top"
+autowrap = true
+
+[node name="WindowOnTop" type="CheckBox" parent="M/V/M2/M/V/OnTop/H"]
+margin_left = 96.0
+margin_right = 120.0
+margin_bottom = 31.0
+
+[connection signal="file_selected" from="FileDialog" to="." method="_on_FileDialog_file_selected"]
+[connection signal="pressed" from="M/V/M2/M/V/ChangeFile/ChangeFile" to="." method="_on_ChangeFile_pressed"]
+[connection signal="toggled" from="M/V/M2/M/V/DisplayGrid/V/H/MouseGrid" to="." method="_on_MouseGrid_toggled"]
+[connection signal="value_changed" from="M/V/M2/M/V/DisplayGrid/V/MouseStrength" to="." method="_on_MouseStrength_value_changed"]
+[connection signal="toggled" from="M/V/M2/M/V/DisplayGrid/V2/H2/TilesGrid" to="." method="_on_TilesGrid_toggled"]
+[connection signal="value_changed" from="M/V/M2/M/V/DisplayGrid/V2/TilesStrength" to="." method="_on_TilesStrength_value_changed"]
+[connection signal="toggled" from="M/V/M2/M/V/OnTop/H/WindowOnTop" to="." method="_on_WindowOnTop_toggled"]
