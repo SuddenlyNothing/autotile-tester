@@ -20,8 +20,14 @@ energy = 1.0
 visible = false
 polygon = PoolVector2Array( 0, 0, 0, 0, 0, 0, 0, 0 )
 
-[node name="HintTiles" type="TileMap" parent="."]
-self_modulate = Color( 1, 1, 1, 0.392157 )
-tile_set = ExtResource( 1 )
-cell_size = Vector2( 24, 24 )
-format = 1
+[node name="DeleteRectHint" type="ColorRect" parent="."]
+visible = false
+margin_right = 40.0
+margin_bottom = 40.0
+color = Color( 1, 0, 0, 0.392157 )
+
+[node name="DrawRectHint" type="ColorRect" parent="."]
+visible = false
+margin_right = 40.0
+margin_bottom = 40.0
+color = Color( 1, 1, 1, 0.392157 )

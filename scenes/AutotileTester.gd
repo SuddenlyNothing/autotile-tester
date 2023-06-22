@@ -1,12 +1,12 @@
 extends TilePlacerStateMachine
 
-enum TOOLS {
-	NONE,
-	DRAW,
-	ERASE,
-	LINE,
-	RECT,
-}
+#enum TOOLS {
+#	NONE,
+#	DRAW,
+#	ERASE,
+#	LINE,
+#	RECT,
+#}
 
 const GridLighter := preload("res://scenes/editor/GridLighter.tscn")
 const DIRECTIONS := [
@@ -20,7 +20,6 @@ const DIRECTIONS := [
 	Vector2(-1, 1),
 ]
 
-var active_tool = TOOLS.NONE
 var lights := {}
 var tile_light_energy := 0.7
 var tile_light_enabled := true
@@ -28,110 +27,83 @@ var tile_light_enabled := true
 var has_previous_pos := false
 var previous_pos := Vector2()
 
-var tool_started := false
-var tool_start_pos: Vector2
-var tool_tile: int
-
 onready var grid_lighter := $GridLighter
 onready var texture := tile_set.tile_get_texture(0)
 onready var select := $Select
-onready var hint_tiles := $HintTiles
 
 
-#func _ready() -> void:
-#	add_state("idle")
-#	add_state("draw")
-#	add_state("erase")
-#	add_state("rect_draw")
-#	add_state("rect_erase")
+func _ready() -> void:
+	add_state("idle")
+	add_state("draw")
+	add_state("erase")
+	add_state("rect_draw")
+	add_state("rect_erase")
+	call_deferred("set_state", "idle")
 
 
-func _unhandled_input(event: InputEvent) -> void:
+# Return value will be used to change state.
+func _get_transition(event: InputEvent):
+	# Draw and erase
 	if event.is_action_pressed("draw", false, true):
-		active_tool = TOOLS.DRAW
-	elif event.is_action_released("draw", true):
-		if active_tool == TOOLS.RECT:
-			tool_started = false
-			hint_tiles.clear()
-			hint_tiles.modulate = Color.white
-			draw_rect_tiles(tool_start_pos,
-					world_to_map(get_global_mouse_position()), tool_tile)
-		active_tool = TOOLS.NONE
-		has_previous_pos = false
+		return states.draw
 	elif event.is_action_pressed("erase", false, true):
-		active_tool = TOOLS.ERASE
-	elif event.is_action_released("erase", true):
-		if active_tool == TOOLS.RECT:
-			tool_started = false
-			hint_tiles.clear()
-			hint_tiles.modulate = Color.white
-			draw_rect_tiles(tool_start_pos,
-					world_to_map(get_global_mouse_position()), tool_tile)
-		active_tool = TOOLS.NONE
-		has_previous_pos = false
-	elif event.is_action_pressed("rect", false, true):
-		active_tool = TOOLS.RECT
-	elif event.is_action_released("rect", true):
-		if not (Input.is_action_pressed("draw") or \
-				Input.is_action_pressed("erase")) or not tool_started:
-			hint_tiles.clear()
-			active_tool = TOOLS.NONE
+		return states.erase
+	
+	# Rect draw and erase
+	if Input.is_action_pressed("rect"):
+		if event.is_action_pressed("draw"):
+			return states.rect_draw
+		elif event.is_action_pressed("erase"):
+			return states.rect_erase
+	
+	# Release rect draw and erase and normal draw and erase
+	if event.is_action_released("draw", false):
+		return states.idle
+	elif event.is_action_released("erase", false):
+		return states.idle
+	return null
 
 
-func _process(_delta: float) -> void:
+func _enter_state(new_state: String, old_state) -> void:
+	match new_state:
+		states.idle:
+#			has_previous_pos = false
+			pass
+		states.draw:
+			pass
+		states.erase:
+			pass
+		states.rect_draw:
+			pass
+		states.rect_erase:
+			pass
+
+
+func _exit_state(old_state, new_state: String) -> void:
+	match new_state:
+		states.idle:
+			pass
+		states.draw:
+			pass
+		states.erase:
+			pass
+		states.rect_draw:
+			pass
+		states.rect_erase:
+			pass
+
+
+func _process(delta: float) -> void:
 	grid_lighter.position = get_global_mouse_position()
-	match active_tool:
-		TOOLS.DRAW:
+	match state:
+		states.draw:
 			draw_tile(0)
-		TOOLS.ERASE:
+		states.erase:
 			draw_tile(-1)
-		TOOLS.RECT:
-			if Input.is_action_just_pressed("draw"):
-				tool_started = true
-				hint_tiles.modulate = Color.white
-				tool_tile = 0
-				tool_start_pos = world_to_map(get_global_mouse_position())
-			elif tool_started and Input.is_action_just_released("draw"):
-				tool_started = false
-				hint_tiles.clear()
-				hint_tiles.modulate = Color.white
-				draw_rect_tiles(tool_start_pos,
-						world_to_map(get_global_mouse_position()), 0)
-			elif Input.is_action_just_pressed("erase"):
-				tool_started = true
-				tool_tile = -1
-				hint_tiles.modulate = Color.red
-				tool_start_pos = world_to_map(get_global_mouse_position())
-			elif tool_started and Input.is_action_just_released("erase"):
-				tool_started = false
-				hint_tiles.clear()
-				hint_tiles.modulate = Color.red
-				draw_rect_tiles(tool_start_pos,
-						world_to_map(get_global_mouse_position()), -1)
-			elif not tool_started:
-				if Input.is_action_pressed("erase"):
-					has_previous_pos = false
-					tool_started = true
-					tool_tile = -1
-					hint_tiles.modulate = Color.red
-					tool_start_pos = world_to_map(get_global_mouse_position())
-				elif Input.is_action_pressed("draw"):
-					has_previous_pos = false
-					tool_started = true
-					hint_tiles.modulate = Color.white
-					tool_tile = 0
-					tool_start_pos = world_to_map(get_global_mouse_position())
-			elif tool_started and (Input.is_action_pressed("erase") or \
-					Input.is_action_pressed("draw")):
-				if tool_started:
-					hint_tiles.clear()
-					var end_pos := world_to_map(get_global_mouse_position())
-					for x in range(min(tool_start_pos.x, end_pos.x),
-							max(end_pos.x, tool_start_pos.x) + 1):
-						for y in range(min(end_pos.y, tool_start_pos.y),
-								max(end_pos.y, tool_start_pos.y) + 1):
-							hint_tiles.set_cell(x, y, 0)
-					hint_tiles.update_bitmask_region()
+		states.rect_draw:
+			pass
+		states.rect_erase:
+			pass
 
 
 func draw_tile(tile: int) -> void:
