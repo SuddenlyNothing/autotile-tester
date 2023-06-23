@@ -223,7 +223,7 @@ func set_cellv(pos: Vector2, tile: int, flip_x: bool = false,
 	.set_cellv(pos, tile, flip_x, flip_y, transpose, autotile_coord)
 
 
-func _on_Controls_file_changed(texture: ImageTexture) -> void:
+func _on_Controls_file_changed(texture) -> void:
 	tile_set.tile_set_texture(0, texture)
 
 

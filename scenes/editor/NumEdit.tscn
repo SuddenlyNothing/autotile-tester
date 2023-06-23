@@ -28,30 +28,23 @@ anchor_bottom = 1.0
 custom_constants/separation = 0
 script = ExtResource( 3 )
 
-[node name="Label" type="Label" parent="."]
-margin_top = 293.0
-margin_right = 505.0
-margin_bottom = 307.0
-size_flags_horizontal = 3
-
 [node name="LineEdit" type="LineEdit" parent="."]
-margin_left = 505.0
-margin_right = 1010.0
-margin_bottom = 600.0
+margin_right = 536.0
+margin_bottom = 510.0
 size_flags_horizontal = 3
 text = "24"
 caret_blink = true
 caret_blink_speed = 0.5
 
 [node name="V" type="VBoxContainer" parent="."]
-margin_left = 1010.0
-margin_right = 1024.0
-margin_bottom = 600.0
+margin_left = 536.0
+margin_right = 550.0
+margin_bottom = 510.0
 custom_constants/separation = 0
 
 [node name="Increase" type="Button" parent="V"]
 margin_right = 14.0
-margin_bottom = 300.0
+margin_bottom = 255.0
 rect_min_size = Vector2( 14, 0 )
 size_flags_vertical = 3
 custom_styles/hover = SubResource( 2 )
@@ -61,9 +54,9 @@ icon = ExtResource( 1 )
 expand_icon = true
 
 [node name="Decrease" type="Button" parent="V"]
-margin_top = 300.0
+margin_top = 255.0
 margin_right = 14.0
-margin_bottom = 600.0
+margin_bottom = 510.0
 rect_min_size = Vector2( 14, 0 )
 size_flags_vertical = 3
 custom_styles/hover = SubResource( 2 )
@@ -73,6 +66,5 @@ icon = ExtResource( 2 )
 expand_icon = true
 
 [connection signal="text_changed" from="LineEdit" to="." method="_on_LineEdit_text_changed"]
-[connection signal="text_entered" from="LineEdit" to="." method="_on_LineEdit_text_entered"]
 [connection signal="pressed" from="V/Increase" to="." method="_on_Increase_pressed"]
 [connection signal="pressed" from="V/Decrease" to="." method="_on_Decrease_pressed"]
