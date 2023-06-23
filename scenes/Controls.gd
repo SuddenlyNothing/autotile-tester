@@ -9,6 +9,9 @@ signal window_on_top_changed(is_on_top)
 signal cell_size_changed(cell_size)
 signal subtile_size_changed(subtile_size)
 
+const Hidden := preload("res://assets/hidden.svg")
+const Visible := preload("res://assets/visible.svg")
+
 var file := File.new()
 export(String, FILE, "*.png") var curr_file
 var modified_time := -1
@@ -22,6 +25,8 @@ onready var current_file := $"%CurrentFile"
 onready var tiles_texture := $"%TilesTexture"
 onready var accept_dialog := $"%AcceptDialog"
 onready var fps: HBoxContainer = $"%FPS"
+onready var controls: MarginContainer = $"%Controls"
+onready var toggle_visibility: Button = $"%ToggleVisibility"
 
 
 func _ready() -> void:
@@ -38,7 +43,11 @@ func get_texture(path: String) -> ImageTexture:
 	return texture
 
 
-func load_animated_texture(paths: PoolStringArray) -> void:
+func load_animated_texture_paths(paths: PoolStringArray) -> void:
+	for path in paths:
+		if path.get_extension() != "png":
+			accept_dialog.popup_centered()
+			return
 	fps.show()
 	var anim_texture := AnimatedTexture.new()
 	anim_texture.frames = paths.size()
@@ -53,11 +62,11 @@ func load_animated_texture(paths: PoolStringArray) -> void:
 	emit_signal("file_changed", anim_texture)
 
 
-func load_texture(path: String) -> void:
-	fps.hide()
+func load_texture_path(path: String) -> void:
 	if path.get_extension() != "png":
 		accept_dialog.popup_centered()
 		return
+	fps.hide()
 	curr_file = path
 	current_file.text = path.get_file()
 	var texture := get_texture(path)
@@ -66,22 +75,26 @@ func load_texture(path: String) -> void:
 	emit_signal("file_changed", texture)
 
 
+func load_texture(texture: Texture) -> void:
+	pass
+
+
 func _on_files_dropped(files: PoolStringArray, screen: int) -> void:
 	if files.size() == 1:
-		load_texture(files[0])
+		load_texture_path(files[0])
 	else:
-		load_animated_texture(files)
+		load_animated_texture_paths(files)
 
 
 func _on_FileDialog_files_selected(paths: PoolStringArray) -> void:
 	if paths.size() == 1:
-		load_texture(paths[0])
+		load_texture_path(paths[0])
 	else:
-		load_animated_texture(paths)
+		load_animated_texture_paths(paths)
 
 
 func _on_FileDialog_file_selected(path: String) -> void:
-	load_texture(path)
+	load_texture_path(path)
 
 
 func _on_ChangeFile_pressed() -> void:
@@ -140,3 +153,23 @@ func _on_SubtileSizeY_number_changed(number: int) -> void:
 func _on_FPS_number_changed(number: int) -> void:
 	tiles_texture.texture.fps = number
 	curr_fps = number
+
+
+func _on_Temp_pressed() -> void:
+	pass # Replace with function body.
+
+
+func _on_Thick_pressed() -> void:
+	pass # Replace with function body.
+
+
+func _on_Anim_pressed() -> void:
+	pass # Replace with function body.
+
+
+func _on_ToggleVisibility_pressed() -> void:
+	controls.visible = not controls.visible
+	if controls.visible:
+		toggle_visibility.icon = Visible
+	else:
+		toggle_visibility.icon = Hidden

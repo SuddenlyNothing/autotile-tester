@@ -8,6 +8,9 @@
 [node name="C" type="CanvasLayer" parent="."]
 
 [node name="Controls" parent="C" instance=ExtResource( 1 )]
+__meta__ = {
+"_edit_vertical_guides_": [ 10.0, 130.0, 70.0 ]
+}
 
 [node name="AutotileTester" parent="." instance=ExtResource( 2 )]
 
