@@ -13,7 +13,7 @@ const DIRECTIONS := [
 ]
 
 var lights := {}
-var tile_light_energy := 0.7
+var tile_light_energy := 1.2
 var tile_light_enabled := true
 
 var has_previous_pos := false
@@ -250,6 +250,11 @@ func _on_Controls_tiles_strength_changed(value: float) -> void:
 func _on_Controls_cell_size_changed(p_cell_size: Vector2) -> void:
 	cell_size = p_cell_size
 	grid_sprite.cell_size = p_cell_size
+	var light_scale := max(cell_size.x, cell_size.y) / 24
+	grid_lighter.texture_scale = light_scale
+	for pos in lights:
+		lights[pos].position = pos * cell_size + cell_size / 2
+		lights[pos].texture_scale = light_scale
 
 
 func _on_Controls_subtile_size_changed(subtile_size: Vector2) -> void:
