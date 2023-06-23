@@ -11,6 +11,10 @@ const DIRECTIONS := [
 	Vector2.LEFT,
 	Vector2(-1, 1),
 ]
+const MIN_ZOOM := Vector2.ONE * 0.2
+const MAX_ZOOM := Vector2.ONE * 2
+var MIN_ZOOM_LENGTH := MIN_ZOOM.length()
+var MAX_ZOOM_LENGTH := MAX_ZOOM.length()
 
 var lights := {}
 var tile_light_energy := 1.2
@@ -21,11 +25,14 @@ var previous_pos := Vector2()
 
 var hint_start_tile := Vector2()
 
+var panning := false
+
 onready var grid_lighter := $GridLighter
 onready var texture := tile_set.tile_get_texture(0)
 onready var select := $Select
 onready var hint_draw := $HintDraw
 onready var grid_sprite := $Grid/GridSprite
+onready var camera := $Camera2D
 
 
 func _ready() -> void:
@@ -103,6 +110,34 @@ func _process(delta: float) -> void:
 			hint_draw.update()
 		states.rect_erase:
 			hint_draw.update()
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("pan", false, true):
+		panning = true
+	elif event.is_action_released("pan", true):
+		panning = false
+	elif panning and event is InputEventMouseMotion:
+		camera.position -= event.relative * camera.zoom
+	elif event is InputEventMouseButton:
+		event.factor = 2
+		if event.button_index == 4:
+			var min_cell_size_factor := min(cell_size.x, cell_size.y) / 24
+			# Scroll Up
+			var new_zoom = (camera.zoom - (Vector2.ONE * event.factor / 10))
+			if new_zoom.length() < MIN_ZOOM_LENGTH * min_cell_size_factor\
+					 or new_zoom.x < 0 or new_zoom.y < 0:
+				new_zoom = MIN_ZOOM * min_cell_size_factor
+			camera.zoom = new_zoom
+			grid_sprite.zoom = camera.zoom
+		elif event.button_index == 5:
+			var max_cell_size_factor := max(cell_size.x, cell_size.y) / 24
+			# Scroll Down
+			var new_zoom = (camera.zoom + (Vector2.ONE * event.factor / 10))\
+					.limit_length(MAX_ZOOM_LENGTH * \
+					max_cell_size_factor)
+			camera.zoom = new_zoom
+			grid_sprite.zoom = camera.zoom
 
 
 func get_world_rect_bounds(p1: Vector2, p2: Vector2) -> Rect2:

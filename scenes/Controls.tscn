@@ -43,19 +43,19 @@ custom_constants/separation = 0
 [node name="Controls" type="MarginContainer" parent="H"]
 unique_name_in_owner = true
 margin_right = 168.0
-margin_bottom = 510.0
+margin_bottom = 500.0
 mouse_filter = 2
 
 [node name="ColorRect" type="ColorRect" parent="H/Controls"]
 margin_right = 168.0
-margin_bottom = 510.0
+margin_bottom = 500.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color( 0.243137, 0.231373, 0.27451, 1 )
 
 [node name="M" type="MarginContainer" parent="H/Controls"]
 margin_right = 168.0
-margin_bottom = 510.0
+margin_bottom = 500.0
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -68,7 +68,7 @@ custom_constants/margin_bottom = 10
 margin_left = 10.0
 margin_top = 10.0
 margin_right = 158.0
-margin_bottom = 500.0
+margin_bottom = 490.0
 mouse_filter = 2
 custom_constants/separation = 10
 

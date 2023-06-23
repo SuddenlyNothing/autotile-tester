@@ -24,3 +24,7 @@ polygon = PoolVector2Array( 0, 0, 0, 0, 0, 0, 0, 0 )
 
 [node name="HintDraw" type="Node2D" parent="."]
 script = ExtResource( 5 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2( 250, 250 )
+current = true
