@@ -25,6 +25,7 @@ onready var grid_lighter := $GridLighter
 onready var texture := tile_set.tile_get_texture(0)
 onready var select := $Select
 onready var hint_draw := $HintDraw
+onready var grid_sprite := $Grid/GridSprite
 
 
 func _ready() -> void:
@@ -243,3 +244,12 @@ func _on_Controls_tiles_strength_changed(value: float) -> void:
 	tile_light_energy = value
 	for key in lights:
 		lights[key].energy = value
+
+
+func _on_Controls_cell_size_changed(p_cell_size: Vector2) -> void:
+	cell_size = p_cell_size
+	grid_sprite.cell_size = p_cell_size
+
+
+func _on_Controls_subtile_size_changed(subtile_size: Vector2) -> void:
+	tile_set.autotile_set_size(0, subtile_size)

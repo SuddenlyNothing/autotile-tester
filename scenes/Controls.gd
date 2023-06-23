@@ -6,10 +6,15 @@ signal mouse_strength_changed(value)
 signal tiles_light_changed(is_on)
 signal tiles_strength_changed(value)
 signal window_on_top_changed(is_on_top)
+signal cell_size_changed(cell_size)
+signal subtile_size_changed(subtile_size)
 
 var file := File.new()
 export(String, FILE, "*.png") var curr_file
 var modified_time := -1
+
+export var cell_size := Vector2(24, 24)
+export var subtile_size := Vector2(24, 24)
 
 onready var file_dialog := $"%FileDialog"
 onready var current_file := $"%CurrentFile"
@@ -79,3 +84,22 @@ func _on_GetModifiedTime_timeout() -> void:
 		emit_signal("file_changed", updated_texture)
 	modified_time = new_modified_time
 
+
+func _on_CellSizeX_number_changed(number: int) -> void:
+	cell_size.x = number
+	emit_signal("cell_size_changed", cell_size)
+
+
+func _on_CellSizeY_number_changed(number: int) -> void:
+	cell_size.y = number
+	emit_signal("cell_size_changed", cell_size)
+
+
+func _on_SubtileSizeX_number_changed(number: int) -> void:
+	subtile_size.x = number
+	emit_signal("subtile_size_changed", subtile_size)
+
+
+func _on_SubtileSizeY_number_changed(number: int) -> void:
+	subtile_size.y = number
+	emit_signal("subtile_size_changed", subtile_size)

@@ -9,6 +9,7 @@
 [node name="AutotileTester" type="TileMap"]
 tile_set = ExtResource( 1 )
 cell_size = Vector2( 24, 24 )
+show_collision = true
 format = 1
 script = ExtResource( 2 )
 

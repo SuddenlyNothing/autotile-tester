@@ -11,8 +11,10 @@
 
 [node name="AutotileTester" parent="." instance=ExtResource( 2 )]
 
+[connection signal="cell_size_changed" from="C/Controls" to="AutotileTester" method="_on_Controls_cell_size_changed"]
 [connection signal="file_changed" from="C/Controls" to="AutotileTester" method="_on_Controls_file_changed"]
 [connection signal="mouse_light_changed" from="C/Controls" to="AutotileTester" method="_on_Controls_mouse_light_changed"]
 [connection signal="mouse_strength_changed" from="C/Controls" to="AutotileTester" method="_on_Controls_mouse_strength_changed"]
+[connection signal="subtile_size_changed" from="C/Controls" to="AutotileTester" method="_on_Controls_subtile_size_changed"]
 [connection signal="tiles_light_changed" from="C/Controls" to="AutotileTester" method="_on_Controls_tiles_light_changed"]
 [connection signal="tiles_strength_changed" from="C/Controls" to="AutotileTester" method="_on_Controls_tiles_strength_changed"]

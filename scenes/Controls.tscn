@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://scenes/Controls.gd" type="Script" id=1]
 [ext_resource path="res://assets/temp_tiles.png" type="Texture" id=2]
+[ext_resource path="res://scenes/NumberEdit.tscn" type="PackedScene" id=3]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.231373, 0.223529, 0.262745, 1 )
@@ -41,24 +42,22 @@ margin_bottom = 58.0
 dialog_text = "Please select a file with a .png extension"
 
 [node name="M" type="MarginContainer" parent="."]
-anchor_right = 1.0
 anchor_bottom = 1.0
-margin_right = -824.0
-margin_bottom = -324.0
-rect_min_size = Vector2( 200, 600 )
+margin_right = 200.0
 mouse_filter = 2
 custom_constants/margin_right = 10
 
 [node name="V" type="VBoxContainer" parent="M"]
 margin_right = 190.0
-margin_bottom = 600.0
+margin_bottom = 510.0
 mouse_filter = 2
+size_flags_vertical = 3
 custom_constants/separation = 0
 
 [node name="Panel" type="Panel" parent="M/V"]
 margin_right = 190.0
-margin_bottom = 180.0
-rect_min_size = Vector2( 0, 180 )
+margin_bottom = 100.0
+rect_min_size = Vector2( 0, 100 )
 custom_styles/panel = SubResource( 1 )
 
 [node name="M" type="MarginContainer" parent="M/V/Panel"]
@@ -75,7 +74,7 @@ unique_name_in_owner = true
 margin_left = 3.0
 margin_top = 3.0
 margin_right = 187.0
-margin_bottom = 177.0
+margin_bottom = 97.0
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -84,9 +83,9 @@ expand = true
 stretch_mode = 6
 
 [node name="M2" type="MarginContainer" parent="M/V"]
-margin_top = 180.0
+margin_top = 100.0
 margin_right = 190.0
-margin_bottom = 600.0
+margin_bottom = 510.0
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -94,14 +93,14 @@ custom_constants/margin_right = 50
 
 [node name="ColorRect" type="ColorRect" parent="M/V/M2"]
 margin_right = 140.0
-margin_bottom = 420.0
+margin_bottom = 410.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color( 0.243137, 0.231373, 0.27451, 1 )
 
 [node name="M" type="MarginContainer" parent="M/V/M2"]
 margin_right = 140.0
-margin_bottom = 420.0
+margin_bottom = 410.0
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -114,7 +113,7 @@ custom_constants/margin_bottom = 10
 margin_left = 10.0
 margin_top = 10.0
 margin_right = 130.0
-margin_bottom = 410.0
+margin_bottom = 400.0
 mouse_filter = 2
 custom_constants/separation = 10
 
@@ -254,6 +253,58 @@ margin_left = 96.0
 margin_right = 120.0
 margin_bottom = 31.0
 
+[node name="S4" type="HSeparator" parent="M/V/M2/M/V"]
+margin_top = 269.0
+margin_right = 120.0
+margin_bottom = 273.0
+mouse_filter = 2
+
+[node name="CellSize" type="VBoxContainer" parent="M/V/M2/M/V"]
+margin_top = 283.0
+margin_right = 120.0
+margin_bottom = 325.0
+
+[node name="Label" type="Label" parent="M/V/M2/M/V/CellSize"]
+margin_right = 120.0
+margin_bottom = 14.0
+text = "Cell Size"
+
+[node name="H" type="HBoxContainer" parent="M/V/M2/M/V/CellSize"]
+margin_top = 18.0
+margin_right = 120.0
+margin_bottom = 42.0
+
+[node name="X" parent="M/V/M2/M/V/CellSize/H" instance=ExtResource( 3 )]
+text = "24"
+
+[node name="Y" parent="M/V/M2/M/V/CellSize/H" instance=ExtResource( 3 )]
+margin_left = 62.0
+margin_right = 120.0
+text = "24"
+
+[node name="SubtileSize" type="VBoxContainer" parent="M/V/M2/M/V"]
+margin_top = 335.0
+margin_right = 120.0
+margin_bottom = 377.0
+
+[node name="Label" type="Label" parent="M/V/M2/M/V/SubtileSize"]
+margin_right = 120.0
+margin_bottom = 14.0
+text = "Subtile Size"
+
+[node name="H" type="HBoxContainer" parent="M/V/M2/M/V/SubtileSize"]
+margin_top = 18.0
+margin_right = 120.0
+margin_bottom = 42.0
+
+[node name="X" parent="M/V/M2/M/V/SubtileSize/H" instance=ExtResource( 3 )]
+text = "24"
+
+[node name="Y" parent="M/V/M2/M/V/SubtileSize/H" instance=ExtResource( 3 )]
+margin_left = 62.0
+margin_right = 120.0
+text = "24"
+
 [node name="GetModifiedTime" type="Timer" parent="."]
 wait_time = 0.2
 autostart = true
@@ -265,4 +316,8 @@ autostart = true
 [connection signal="toggled" from="M/V/M2/M/V/DisplayGrid/V2/H2/TilesGrid" to="." method="_on_TilesGrid_toggled"]
 [connection signal="value_changed" from="M/V/M2/M/V/DisplayGrid/V2/TilesStrength" to="." method="_on_TilesStrength_value_changed"]
 [connection signal="toggled" from="M/V/M2/M/V/OnTop/H/WindowOnTop" to="." method="_on_WindowOnTop_toggled"]
+[connection signal="number_changed" from="M/V/M2/M/V/CellSize/H/X" to="." method="_on_CellSizeX_number_changed"]
+[connection signal="number_changed" from="M/V/M2/M/V/CellSize/H/Y" to="." method="_on_CellSizeY_number_changed"]
+[connection signal="number_changed" from="M/V/M2/M/V/SubtileSize/H/X" to="." method="_on_SubtileSizeX_number_changed"]
+[connection signal="number_changed" from="M/V/M2/M/V/SubtileSize/H/Y" to="." method="_on_SubtileSizeY_number_changed"]
 [connection signal="timeout" from="GetModifiedTime" to="." method="_on_GetModifiedTime_timeout"]
