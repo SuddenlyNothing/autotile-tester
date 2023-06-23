@@ -46,11 +46,12 @@ func _get_transition(event: InputEvent):
 		return states.erase
 	
 	# Rect draw and erase
-	if Input.is_action_pressed("rect"):
-		if event.is_action_pressed("draw"):
-			return states.rect_draw
-		elif event.is_action_pressed("erase"):
-			return states.rect_erase
+	if event is InputEventWithModifiers:
+		if event.shift and (event.command or event.control):
+			if event.is_action_pressed("draw"):
+				return states.rect_draw
+			elif event.is_action_pressed("erase"):
+				return states.rect_erase
 	
 	# Release rect draw and erase and normal draw and erase
 	if event.is_action_released("draw", false):
