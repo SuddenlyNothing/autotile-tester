@@ -12,7 +12,7 @@ const DIRECTIONS := [
 	Vector2(-1, 1),
 ]
 const MIN_ZOOM := Vector2.ONE * 0.2
-const MAX_ZOOM := Vector2.ONE * 2
+const MAX_ZOOM := Vector2.ONE * 2.5
 var MIN_ZOOM_LENGTH := MIN_ZOOM.length()
 var MAX_ZOOM_LENGTH := MAX_ZOOM.length()
 
@@ -29,7 +29,6 @@ var panning := false
 
 onready var grid_lighter := $GridLighter
 onready var texture := tile_set.tile_get_texture(0)
-onready var select := $Select
 onready var hint_draw := $HintDraw
 onready var grid_sprite := $Grid/GridSprite
 onready var camera := $Camera2D

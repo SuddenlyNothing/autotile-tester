@@ -10,23 +10,33 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
 script = ExtResource( 1 )
-curr_file = "res://assets/temp_tiles.png"
 temp = "res://assets/temp_tiles.png"
 thick = "res://assets/thick.png"
 anim = [ "res://assets/WaterTileAnim1.png", "res://assets/WaterTileAnim2.png", "res://assets/WaterTileAnim3.png", "res://assets/WaterTileAnim4.png", "res://assets/WaterTileAnim5.png", "res://assets/WaterTileAnim6.png", "res://assets/WaterTileAnim7.png", "res://assets/WaterTileAnim8.png", "res://assets/WaterTileAnim9.png", "res://assets/WaterTileAnim10.png", "res://assets/WaterTileAnim11.png", "res://assets/WaterTileAnim12.png" ]
+curr_file = "res://assets/temp_tiles.png"
 
 [node name="FileDialog" type="FileDialog" parent="."]
 unique_name_in_owner = true
-margin_left = 50.0
-margin_top = 50.0
-margin_right = 974.0
-margin_bottom = 580.0
+anchor_right = 1.0
+anchor_bottom = 1.0
 rect_min_size = Vector2( 400, 140 )
+popup_exclusive = true
 window_title = "Open File(s)"
 resizable = true
 mode = 1
 access = 2
 filters = PoolStringArray( "*.png" )
+
+[node name="SaveFile" type="FileDialog" parent="."]
+unique_name_in_owner = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_min_size = Vector2( 400, 140 )
+popup_exclusive = true
+window_title = "Open a Directory"
+resizable = true
+mode = 2
+access = 2
 
 [node name="AcceptDialog" type="AcceptDialog" parent="."]
 unique_name_in_owner = true
@@ -416,8 +426,8 @@ texture = ExtResource( 2 )
 expand = true
 stretch_mode = 5
 
-[connection signal="file_selected" from="FileDialog" to="." method="_on_FileDialog_file_selected"]
 [connection signal="files_selected" from="FileDialog" to="." method="_on_FileDialog_files_selected"]
+[connection signal="dir_selected" from="SaveFile" to="." method="_on_SaveFile_dir_selected"]
 [connection signal="pressed" from="H/Controls/M/V/ChangeFile/ChangeFile" to="." method="_on_ChangeFile_pressed"]
 [connection signal="toggled" from="H/Controls/M/V/OnTop/H/WindowOnTop" to="." method="_on_WindowOnTop_toggled"]
 [connection signal="number_changed" from="H/Controls/M/V/CellSize/H/CellSizeX" to="." method="_on_CellSizeX_number_changed"]

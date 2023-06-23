@@ -12,14 +12,17 @@ signal subtile_size_changed(subtile_size)
 const Hidden := preload("res://assets/hidden.svg")
 const Visible := preload("res://assets/visible.svg")
 
-var file := File.new()
-export(String, FILE, "*.png") var curr_file
-var modified_time := -1
-var curr_fps := 10
-
 export(String, FILE, "*.png") var temp
 export(String, FILE, "*.png") var thick
 export(Array, String, FILE, "*.png") var anim
+
+export(String, FILE, "*.png") var curr_file
+
+var file := File.new()
+var modified_time := -1
+var curr_fps := 10
+
+var download_file := ""
 
 export var cell_size := Vector2(24, 24)
 export var subtile_size := Vector2(24, 24)
@@ -35,6 +38,7 @@ onready var cell_size_x: HBoxContainer = $"%CellSizeX"
 onready var cell_size_y: HBoxContainer = $"%CellSizeY"
 onready var subtile_size_x: HBoxContainer = $"%SubtileSizeX"
 onready var subtile_size_y: HBoxContainer = $"%SubtileSizeY"
+onready var save_file: FileDialog = $"%SaveFile"
 
 
 func _ready() -> void:
@@ -99,10 +103,6 @@ func _on_FileDialog_files_selected(paths: PoolStringArray) -> void:
 		load_texture_path(paths[0])
 	else:
 		load_animated_texture_paths(paths)
-
-
-func _on_FileDialog_file_selected(path: String) -> void:
-	load_texture_path(path)
 
 
 func _on_ChangeFile_pressed() -> void:
@@ -196,12 +196,27 @@ func _on_PresetsAnim_pressed() -> void:
 
 
 func _on_DownloadTemp_pressed() -> void:
-	pass # Replace with function body.
+	download_file = "temp"
+	save_file.popup()
 
 
 func _on_DownloadThick_pressed() -> void:
-	pass # Replace with function body.
+	download_file = "thick"
+	save_file.popup()
 
 
 func _on_DownloadAnim_pressed() -> void:
-	pass # Replace with function body.
+	download_file = "anim"
+	save_file.popup()
+
+
+func _on_SaveFile_dir_selected(dir: String) -> void:
+	var d := Directory.new()
+	match download_file:
+		"temp":
+			d.copy(temp, dir.plus_file(temp.get_file()))
+		"thick":
+			d.copy(thick, dir.plus_file(thick.get_file()))
+		"anim":
+			for file in anim:
+				d.copy(file, dir.plus_file(file.get_file()))
