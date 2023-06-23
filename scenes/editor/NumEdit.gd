@@ -3,7 +3,7 @@ extends HBoxContainer
 
 signal number_changed(number)
 
-export(int) var start_num := 24 setget set_start_num
+export(int) var num := 24 setget set_num
 
 var previous_number: int
 
@@ -13,12 +13,12 @@ onready var curr_num := int(line_edit.text)
 
 func _ready() -> void:
 	if not Engine.editor_hint:
-		previous_number = start_num
+		previous_number = num
 		line_edit.text = str(previous_number)
 
 
-func set_start_num(val: int) -> void:
-	start_num = val
+func set_num(val: int) -> void:
+	num = val
 	if line_edit:
 		line_edit.text = str(val)
 		if not Engine.editor_hint and previous_number != val:

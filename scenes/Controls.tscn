@@ -11,6 +11,9 @@ anchor_bottom = 1.0
 mouse_filter = 2
 script = ExtResource( 1 )
 curr_file = "res://assets/temp_tiles.png"
+temp = "res://assets/temp_tiles.png"
+thick = "res://assets/thick.png"
+anim = [ "res://assets/WaterTileAnim1.png", "res://assets/WaterTileAnim2.png", "res://assets/WaterTileAnim3.png", "res://assets/WaterTileAnim4.png", "res://assets/WaterTileAnim5.png", "res://assets/WaterTileAnim6.png", "res://assets/WaterTileAnim7.png", "res://assets/WaterTileAnim8.png", "res://assets/WaterTileAnim9.png", "res://assets/WaterTileAnim10.png", "res://assets/WaterTileAnim11.png", "res://assets/WaterTileAnim12.png" ]
 
 [node name="FileDialog" type="FileDialog" parent="."]
 unique_name_in_owner = true
@@ -34,6 +37,7 @@ dialog_text = "Only *.png files are allowed"
 [node name="H" type="HBoxContainer" parent="."]
 anchor_bottom = 1.0
 margin_right = 168.0
+mouse_filter = 2
 custom_constants/separation = 0
 
 [node name="Controls" type="MarginContainer" parent="H"]
@@ -96,36 +100,36 @@ custom_constants/separation = 0
 [node name="OnTop" type="VBoxContainer" parent="H/Controls/M/V"]
 margin_top = 58.0
 margin_right = 148.0
-margin_bottom = 82.0
+margin_bottom = 89.0
 
 [node name="H" type="HBoxContainer" parent="H/Controls/M/V/OnTop"]
 margin_right = 148.0
-margin_bottom = 24.0
+margin_bottom = 31.0
 
 [node name="Label" type="Label" parent="H/Controls/M/V/OnTop/H"]
-margin_top = 5.0
 margin_right = 120.0
-margin_bottom = 19.0
+margin_bottom = 31.0
 size_flags_horizontal = 3
-text = "Window on Top"
+text = "Keep Window 
+on Top"
 autowrap = true
 
 [node name="WindowOnTop" type="CheckBox" parent="H/Controls/M/V/OnTop/H"]
 margin_left = 124.0
 margin_right = 148.0
-margin_bottom = 24.0
+margin_bottom = 31.0
 
 [node name="S4" type="HSeparator" parent="H/Controls/M/V"]
-margin_top = 92.0
+margin_top = 99.0
 margin_right = 148.0
-margin_bottom = 92.0
+margin_bottom = 99.0
 mouse_filter = 2
 custom_constants/separation = 0
 
 [node name="CellSize" type="VBoxContainer" parent="H/Controls/M/V"]
-margin_top = 102.0
+margin_top = 109.0
 margin_right = 148.0
-margin_bottom = 152.0
+margin_bottom = 159.0
 
 [node name="Label" type="Label" parent="H/Controls/M/V/CellSize"]
 margin_right = 148.0
@@ -137,13 +141,15 @@ margin_top = 18.0
 margin_right = 148.0
 margin_bottom = 50.0
 
-[node name="X" parent="H/Controls/M/V/CellSize/H" instance=ExtResource( 4 )]
+[node name="CellSizeX" parent="H/Controls/M/V/CellSize/H" instance=ExtResource( 4 )]
+unique_name_in_owner = true
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_right = 72.0
 margin_bottom = 32.0
 
-[node name="Y" parent="H/Controls/M/V/CellSize/H" instance=ExtResource( 4 )]
+[node name="CellSizeY" parent="H/Controls/M/V/CellSize/H" instance=ExtResource( 4 )]
+unique_name_in_owner = true
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 76.0
@@ -151,16 +157,16 @@ margin_right = 148.0
 margin_bottom = 32.0
 
 [node name="S5" type="HSeparator" parent="H/Controls/M/V"]
-margin_top = 162.0
+margin_top = 169.0
 margin_right = 148.0
-margin_bottom = 162.0
+margin_bottom = 169.0
 mouse_filter = 2
 custom_constants/separation = 0
 
 [node name="SubtileSize" type="VBoxContainer" parent="H/Controls/M/V"]
-margin_top = 172.0
+margin_top = 179.0
 margin_right = 148.0
-margin_bottom = 222.0
+margin_bottom = 229.0
 
 [node name="Label" type="Label" parent="H/Controls/M/V/SubtileSize"]
 margin_right = 148.0
@@ -173,13 +179,15 @@ margin_right = 148.0
 margin_bottom = 50.0
 rect_pivot_offset = Vector2( -74, 58 )
 
-[node name="X" parent="H/Controls/M/V/SubtileSize/H" instance=ExtResource( 4 )]
+[node name="SubtileSizeX" parent="H/Controls/M/V/SubtileSize/H" instance=ExtResource( 4 )]
+unique_name_in_owner = true
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_right = 72.0
 margin_bottom = 32.0
 
-[node name="Y" parent="H/Controls/M/V/SubtileSize/H" instance=ExtResource( 4 )]
+[node name="SubtileSizeY" parent="H/Controls/M/V/SubtileSize/H" instance=ExtResource( 4 )]
+unique_name_in_owner = true
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 76.0
@@ -187,16 +195,16 @@ margin_right = 148.0
 margin_bottom = 32.0
 
 [node name="S6" type="HSeparator" parent="H/Controls/M/V"]
-margin_top = 232.0
+margin_top = 239.0
 margin_right = 148.0
-margin_bottom = 232.0
+margin_bottom = 239.0
 mouse_filter = 2
 custom_constants/separation = 0
 
 [node name="DisplayGrid" type="VBoxContainer" parent="H/Controls/M/V"]
-margin_top = 242.0
+margin_top = 249.0
 margin_right = 148.0
-margin_bottom = 294.0
+margin_bottom = 301.0
 
 [node name="V" type="VBoxContainer" parent="H/Controls/M/V/DisplayGrid"]
 margin_right = 148.0
@@ -262,16 +270,16 @@ value = 0.7
 tick_count = 5
 
 [node name="S3" type="HSeparator" parent="H/Controls/M/V"]
-margin_top = 304.0
+margin_top = 311.0
 margin_right = 148.0
-margin_bottom = 304.0
+margin_bottom = 311.0
 mouse_filter = 2
 custom_constants/separation = 0
 
 [node name="Presets" type="VBoxContainer" parent="H/Controls/M/V"]
-margin_top = 314.0
+margin_top = 321.0
 margin_right = 148.0
-margin_bottom = 352.0
+margin_bottom = 359.0
 
 [node name="Label" type="Label" parent="H/Controls/M/V/Presets"]
 margin_right = 148.0
@@ -305,16 +313,16 @@ size_flags_horizontal = 3
 text = "Anim"
 
 [node name="S8" type="HSeparator" parent="H/Controls/M/V"]
-margin_top = 362.0
+margin_top = 369.0
 margin_right = 148.0
-margin_bottom = 362.0
+margin_bottom = 369.0
 mouse_filter = 2
 custom_constants/separation = 0
 
 [node name="Download" type="VBoxContainer" parent="H/Controls/M/V"]
-margin_top = 372.0
+margin_top = 379.0
 margin_right = 148.0
-margin_bottom = 410.0
+margin_bottom = 417.0
 
 [node name="Label" type="Label" parent="H/Controls/M/V/Download"]
 margin_right = 148.0
@@ -348,18 +356,18 @@ size_flags_horizontal = 3
 text = "Anim"
 
 [node name="S7" type="HSeparator" parent="H/Controls/M/V"]
-margin_top = 420.0
+margin_top = 427.0
 margin_right = 148.0
-margin_bottom = 420.0
+margin_bottom = 427.0
 mouse_filter = 2
 custom_constants/separation = 0
 
 [node name="FPS" type="HBoxContainer" parent="H/Controls/M/V"]
 unique_name_in_owner = true
 visible = false
-margin_top = 430.0
+margin_top = 437.0
 margin_right = 148.0
-margin_bottom = 462.0
+margin_bottom = 469.0
 
 [node name="Label" type="Label" parent="H/Controls/M/V/FPS"]
 margin_top = 9.0
@@ -374,7 +382,7 @@ margin_left = 76.0
 margin_right = 148.0
 margin_bottom = 32.0
 size_flags_horizontal = 10
-start_num = 10
+num = 10
 
 [node name="ToggleVisibility" type="Button" parent="H"]
 unique_name_in_owner = true
@@ -395,6 +403,7 @@ anchor_right = 1.0
 margin_left = -200.0
 margin_bottom = 200.0
 rect_min_size = Vector2( 200, 200 )
+mouse_filter = 2
 
 [node name="TilesTexture" type="TextureRect" parent="M2"]
 unique_name_in_owner = true
@@ -411,20 +420,20 @@ stretch_mode = 5
 [connection signal="files_selected" from="FileDialog" to="." method="_on_FileDialog_files_selected"]
 [connection signal="pressed" from="H/Controls/M/V/ChangeFile/ChangeFile" to="." method="_on_ChangeFile_pressed"]
 [connection signal="toggled" from="H/Controls/M/V/OnTop/H/WindowOnTop" to="." method="_on_WindowOnTop_toggled"]
-[connection signal="number_changed" from="H/Controls/M/V/CellSize/H/X" to="." method="_on_CellSizeX_number_changed"]
-[connection signal="number_changed" from="H/Controls/M/V/CellSize/H/Y" to="." method="_on_CellSizeY_number_changed"]
-[connection signal="number_changed" from="H/Controls/M/V/SubtileSize/H/X" to="." method="_on_SubtileSizeX_number_changed"]
-[connection signal="number_changed" from="H/Controls/M/V/SubtileSize/H/Y" to="." method="_on_SubtileSizeY_number_changed"]
+[connection signal="number_changed" from="H/Controls/M/V/CellSize/H/CellSizeX" to="." method="_on_CellSizeX_number_changed"]
+[connection signal="number_changed" from="H/Controls/M/V/CellSize/H/CellSizeY" to="." method="_on_CellSizeY_number_changed"]
+[connection signal="number_changed" from="H/Controls/M/V/SubtileSize/H/SubtileSizeX" to="." method="_on_SubtileSizeX_number_changed"]
+[connection signal="number_changed" from="H/Controls/M/V/SubtileSize/H/SubtileSizeY" to="." method="_on_SubtileSizeY_number_changed"]
 [connection signal="toggled" from="H/Controls/M/V/DisplayGrid/V/H/MouseGrid" to="." method="_on_MouseGrid_toggled"]
 [connection signal="value_changed" from="H/Controls/M/V/DisplayGrid/V/MouseStrength" to="." method="_on_MouseStrength_value_changed"]
 [connection signal="toggled" from="H/Controls/M/V/DisplayGrid/V2/H2/TilesGrid" to="." method="_on_TilesGrid_toggled"]
 [connection signal="value_changed" from="H/Controls/M/V/DisplayGrid/V2/TilesStrength" to="." method="_on_TilesStrength_value_changed"]
-[connection signal="pressed" from="H/Controls/M/V/Presets/H/Temp" to="." method="_on_Temp_pressed"]
-[connection signal="pressed" from="H/Controls/M/V/Presets/H/Thick" to="." method="_on_Thick_pressed"]
-[connection signal="pressed" from="H/Controls/M/V/Presets/H/Anim" to="." method="_on_Anim_pressed"]
-[connection signal="pressed" from="H/Controls/M/V/Download/H/Temp" to="." method="_on_Temp_pressed"]
-[connection signal="pressed" from="H/Controls/M/V/Download/H/Thick" to="." method="_on_Thick_pressed"]
-[connection signal="pressed" from="H/Controls/M/V/Download/H/Anim" to="." method="_on_Anim_pressed"]
+[connection signal="pressed" from="H/Controls/M/V/Presets/H/Temp" to="." method="_on_PresetsTemp_pressed"]
+[connection signal="pressed" from="H/Controls/M/V/Presets/H/Thick" to="." method="_on_PresetsThick_pressed"]
+[connection signal="pressed" from="H/Controls/M/V/Presets/H/Anim" to="." method="_on_PresetsAnim_pressed"]
+[connection signal="pressed" from="H/Controls/M/V/Download/H/Temp" to="." method="_on_DownloadTemp_pressed"]
+[connection signal="pressed" from="H/Controls/M/V/Download/H/Thick" to="." method="_on_DownloadThick_pressed"]
+[connection signal="pressed" from="H/Controls/M/V/Download/H/Anim" to="." method="_on_DownloadAnim_pressed"]
 [connection signal="number_changed" from="H/Controls/M/V/FPS/FPS" to="." method="_on_FPS_number_changed"]
 [connection signal="pressed" from="H/ToggleVisibility" to="." method="_on_ToggleVisibility_pressed"]
 [connection signal="timeout" from="GetModifiedTime" to="." method="_on_GetModifiedTime_timeout"]

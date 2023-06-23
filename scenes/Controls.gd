@@ -17,6 +17,10 @@ export(String, FILE, "*.png") var curr_file
 var modified_time := -1
 var curr_fps := 10
 
+export(String, FILE, "*.png") var temp
+export(String, FILE, "*.png") var thick
+export(Array, String, FILE, "*.png") var anim
+
 export var cell_size := Vector2(24, 24)
 export var subtile_size := Vector2(24, 24)
 
@@ -27,6 +31,10 @@ onready var accept_dialog := $"%AcceptDialog"
 onready var fps: HBoxContainer = $"%FPS"
 onready var controls: MarginContainer = $"%Controls"
 onready var toggle_visibility: Button = $"%ToggleVisibility"
+onready var cell_size_x: HBoxContainer = $"%CellSizeX"
+onready var cell_size_y: HBoxContainer = $"%CellSizeY"
+onready var subtile_size_x: HBoxContainer = $"%SubtileSizeX"
+onready var subtile_size_y: HBoxContainer = $"%SubtileSizeY"
 
 
 func _ready() -> void:
@@ -155,21 +163,45 @@ func _on_FPS_number_changed(number: int) -> void:
 	curr_fps = number
 
 
-func _on_Temp_pressed() -> void:
-	pass # Replace with function body.
-
-
-func _on_Thick_pressed() -> void:
-	pass # Replace with function body.
-
-
-func _on_Anim_pressed() -> void:
-	pass # Replace with function body.
-
-
 func _on_ToggleVisibility_pressed() -> void:
 	controls.visible = not controls.visible
 	if controls.visible:
 		toggle_visibility.icon = Visible
 	else:
 		toggle_visibility.icon = Hidden
+
+
+func _on_PresetsTemp_pressed() -> void:
+	load_texture_path(temp)
+	cell_size_x.num = 24
+	cell_size_y.num = 24
+	subtile_size_x.num = 24
+	subtile_size_y.num = 24
+
+
+func _on_PresetsThick_pressed() -> void:
+	load_texture_path(thick)
+	cell_size_x.num = 64
+	cell_size_y.num = 64
+	subtile_size_x.num = 64
+	subtile_size_y.num = 88
+
+
+func _on_PresetsAnim_pressed() -> void:
+	load_animated_texture_paths(anim)
+	cell_size_x.num = 48
+	cell_size_y.num = 48
+	subtile_size_x.num = 48
+	subtile_size_y.num = 48
+
+
+func _on_DownloadTemp_pressed() -> void:
+	pass # Replace with function body.
+
+
+func _on_DownloadThick_pressed() -> void:
+	pass # Replace with function body.
+
+
+func _on_DownloadAnim_pressed() -> void:
+	pass # Replace with function body.

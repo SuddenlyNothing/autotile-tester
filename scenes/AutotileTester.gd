@@ -254,3 +254,4 @@ func _on_Controls_cell_size_changed(p_cell_size: Vector2) -> void:
 
 func _on_Controls_subtile_size_changed(subtile_size: Vector2) -> void:
 	tile_set.autotile_set_size(0, subtile_size)
+	update_bitmask_region()
