@@ -19,6 +19,7 @@ script = ExtResource( 1 )
 __meta__ = {
 "_edit_vertical_guides_": [ 10.0, 130.0, 70.0 ]
 }
+curr_file = "res://assets/temp_tiles.png"
 
 [node name="FileDialog" type="FileDialog" parent="."]
 unique_name_in_owner = true
@@ -253,6 +254,10 @@ margin_left = 96.0
 margin_right = 120.0
 margin_bottom = 31.0
 
+[node name="GetModifiedTime" type="Timer" parent="."]
+wait_time = 0.2
+autostart = true
+
 [connection signal="file_selected" from="FileDialog" to="." method="_on_FileDialog_file_selected"]
 [connection signal="pressed" from="M/V/M2/M/V/ChangeFile/ChangeFile" to="." method="_on_ChangeFile_pressed"]
 [connection signal="toggled" from="M/V/M2/M/V/DisplayGrid/V/H/MouseGrid" to="." method="_on_MouseGrid_toggled"]
@@ -260,3 +265,4 @@ margin_bottom = 31.0
 [connection signal="toggled" from="M/V/M2/M/V/DisplayGrid/V2/H2/TilesGrid" to="." method="_on_TilesGrid_toggled"]
 [connection signal="value_changed" from="M/V/M2/M/V/DisplayGrid/V2/TilesStrength" to="." method="_on_TilesStrength_value_changed"]
 [connection signal="toggled" from="M/V/M2/M/V/OnTop/H/WindowOnTop" to="." method="_on_WindowOnTop_toggled"]
+[connection signal="timeout" from="GetModifiedTime" to="." method="_on_GetModifiedTime_timeout"]

@@ -7,6 +7,10 @@ signal tiles_light_changed(is_on)
 signal tiles_strength_changed(value)
 signal window_on_top_changed(is_on_top)
 
+var file := File.new()
+export(String, FILE, "*.png") var curr_file
+var modified_time := -1
+
 onready var file_dialog := $"%FileDialog"
 onready var current_file := $"%CurrentFile"
 onready var tiles_texture := $"%TilesTexture"
@@ -17,6 +21,16 @@ func _ready() -> void:
 	get_tree().connect("files_dropped", self, "_on_files_dropped")
 
 
+func get_texture(path: String) -> ImageTexture:
+	var image = Image.new()
+	var err = image.load(path)
+	if err != OK:
+		return null
+	var texture := ImageTexture.new()
+	texture.create_from_image(image, 0)
+	return texture
+
+
 func _on_files_dropped(files: PoolStringArray, screen: int) -> void:
 	_on_FileDialog_file_selected(files[0])
 
@@ -25,13 +39,10 @@ func _on_FileDialog_file_selected(path: String) -> void:
 	if path.get_extension() != "png":
 		accept_dialog.popup_centered()
 		return
+	curr_file = path
 	current_file.text = path.get_file()
-	var image = Image.new()
-	var err = image.load(path)
-	if err != OK:
-		print("uh oh!")
-	var texture := ImageTexture.new()
-	texture.create_from_image(image, 0)
+	var texture := get_texture(path)
+	modified_time = -1
 	tiles_texture.texture = texture
 	emit_signal("file_changed", texture)
 
@@ -58,3 +69,13 @@ func _on_TilesStrength_value_changed(value: float) -> void:
 
 func _on_WindowOnTop_toggled(button_pressed: bool) -> void:
 	OS.set_window_always_on_top(button_pressed)
+
+
+func _on_GetModifiedTime_timeout() -> void:
+	var new_modified_time := file.get_modified_time(curr_file)
+	if modified_time >= 0 and new_modified_time != modified_time:
+		var updated_texture := get_texture(curr_file)
+		tiles_texture.texture = updated_texture
+		emit_signal("file_changed", updated_texture)
+	modified_time = new_modified_time
+
