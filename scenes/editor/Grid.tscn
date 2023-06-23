@@ -3,7 +3,6 @@
 [ext_resource path="res://scenes/editor/GridSprite.gd" type="Script" id=2]
 
 [sub_resource type="CanvasItemMaterial" id=4]
-light_mode = 2
 
 [node name="Grid" type="ParallaxBackground"]
 layer = 0

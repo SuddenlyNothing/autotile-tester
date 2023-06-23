@@ -4,6 +4,7 @@ extends HBoxContainer
 signal number_changed(number)
 
 export(int) var num := 24 setget set_num
+export(int) var min_num := 1
 
 var previous_number: int
 
@@ -28,7 +29,7 @@ func set_num(val: int) -> void:
 
 func _on_LineEdit_text_changed(new_text: String) -> void:
 	var prev_caret_pos: int = line_edit.caret_position
-	var new_num := int(new_text)
+	var new_num := max(min_num, int(new_text))
 	line_edit.text = "" if new_text.empty() else str(new_num)
 	if len(line_edit.text) < len(new_text):
 		line_edit.caret_position = prev_caret_pos - 1
@@ -47,5 +48,8 @@ func _on_Increase_pressed() -> void:
 
 func _on_Decrease_pressed() -> void:
 	previous_number -= 1
+	if previous_number < min_num:
+		previous_number += 1
+		return
 	line_edit.text = str(previous_number)
 	emit_signal("number_changed", previous_number)

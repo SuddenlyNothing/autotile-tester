@@ -120,7 +120,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif panning and event is InputEventMouseMotion:
 		camera.position -= event.relative * camera.zoom
 	elif event is InputEventMouseButton:
-		event.factor = 2
+		event.factor = 1 * camera.zoom.x
 		if event.button_index == 4:
 			var min_cell_size_factor := min(cell_size.x, cell_size.y) / 24
 			# Scroll Up
@@ -283,9 +283,14 @@ func _on_Controls_tiles_strength_changed(value: float) -> void:
 
 
 func _on_Controls_cell_size_changed(p_cell_size: Vector2) -> void:
+	var ratio := max(p_cell_size.x, p_cell_size.y) / \
+			max(cell_size.x, cell_size.y)
+	camera.position *= ratio
+	camera.zoom *= ratio
 	cell_size = p_cell_size
 	grid_sprite.cell_size = p_cell_size
-	var light_scale := max(cell_size.x, cell_size.y) / 24
+	grid_sprite.zoom = camera.zoom
+	var light_scale := max(p_cell_size.x, p_cell_size.y) / 24
 	grid_lighter.texture_scale = light_scale
 	for pos in lights:
 		lights[pos].position = pos * cell_size + cell_size / 2
