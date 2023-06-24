@@ -43,6 +43,7 @@ onready var cell_size_y: HBoxContainer = $"%CellSizeY"
 onready var subtile_size_x: HBoxContainer = $"%SubtileSizeX"
 onready var subtile_size_y: HBoxContainer = $"%SubtileSizeY"
 onready var save_file: FileDialog = $"%SaveFile"
+onready var background: ColorRect = $"%Background"
 
 
 func _ready() -> void:
@@ -291,3 +292,7 @@ func _draw() -> void:
 			texture_cell_size)
 	draw_rect(rect, Color(0.6, 0.1, 0.9, 0.3))
 	draw_rect(rect, Color.purple, false)
+
+
+func _on_Background_color_changed(color: Color) -> void:
+	background.color = color
