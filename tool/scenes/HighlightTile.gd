@@ -40,7 +40,9 @@ func set_highlight_coord(val: Vector2) -> void:
 func _draw() -> void:
 	if disabled or not highlighting:
 		return
-	draw_rect(Rect2(highlight_coord * cell_size, cell_size),
+	var subtile_rect := Rect2(highlight_coord * cell_size, subtile_size)
+	draw_rect(subtile_rect, Color(0.6, 0.1, 0.9, 0.3))
+	draw_rect(subtile_rect,
 			Color.purple, false)
-	draw_rect(Rect2(highlight_coord * cell_size, subtile_size),
+	draw_rect(Rect2(highlight_coord * cell_size, cell_size),
 			Color.purple, false)

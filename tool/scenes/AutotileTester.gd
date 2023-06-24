@@ -131,25 +131,29 @@ func _unhandled_input(event: InputEvent) -> void:
 				set_highlight_tile(mouse_pos)
 			else:
 				stop_highlight()
-	elif event is InputEventMouseButton:
+	elif event is InputEventMouseButton and event.is_pressed():
 		event.factor = 1 * camera.zoom.x
 		if event.button_index == 4:
-			var min_cell_size_factor := min(cell_size.x, cell_size.y) / 24
 			# Scroll Up
+			var min_cell_size_factor := min(cell_size.x, cell_size.y) / 24
+			var prev_mouse_pos := get_local_mouse_position()
 			var new_zoom = (camera.zoom - (Vector2.ONE * event.factor / 10))
 			if new_zoom.length() < MIN_ZOOM_LENGTH * min_cell_size_factor\
 					 or new_zoom.x < 0 or new_zoom.y < 0:
 				new_zoom = MIN_ZOOM * min_cell_size_factor
 			camera.zoom = new_zoom
 			grid_sprite.zoom = camera.zoom
+			camera.position -= (get_local_mouse_position() - prev_mouse_pos)
 		elif event.button_index == 5:
-			var max_cell_size_factor := max(cell_size.x, cell_size.y) / 24
 			# Scroll Down
+			var max_cell_size_factor := max(cell_size.x, cell_size.y) / 24
+			var prev_mouse_pos := get_local_mouse_position()
 			var new_zoom = (camera.zoom + (Vector2.ONE * event.factor / 10))\
 					.limit_length(MAX_ZOOM_LENGTH * \
 					max_cell_size_factor)
 			camera.zoom = new_zoom
 			grid_sprite.zoom = camera.zoom
+			camera.position -= (get_local_mouse_position() - prev_mouse_pos)
 
 
 func set_highlight_tile(pos: Vector2) -> void:

@@ -25,6 +25,7 @@ var curr_fps := 10
 var download_file := ""
 var real_size := Vector2()
 var texture_cell_size := Vector2()
+var texture_subtile_size := Vector2()
 var highlight_tile := Vector2.LEFT
 
 export var cell_size := Vector2(24, 24)
@@ -247,8 +248,8 @@ func _on_AutotileTester_highlight_tile(coord: Vector2) -> void:
 func _draw() -> void:
 	if highlight_tile.x < 0 or highlight_tile.y < 0:
 		return
-	var rect := Rect2(tiles_texture.rect_global_position - \
-			Vector2(real_size.x, 0) + highlight_tile * texture_cell_size,
-			texture_cell_size)
+	var topleft: Vector2 = tiles_texture.rect_global_position - \
+			Vector2(real_size.x, 0)
+	var rect := Rect2(topleft + highlight_tile * texture_cell_size, texture_cell_size)
 	draw_rect(rect, Color(0.6, 0.1, 0.9, 0.3))
 	draw_rect(rect, Color.purple, false)

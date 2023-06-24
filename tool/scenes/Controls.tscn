@@ -26,6 +26,7 @@ resizable = true
 mode = 1
 access = 2
 filters = PoolStringArray( "*.png" )
+show_hidden_files = true
 
 [node name="SaveFile" type="FileDialog" parent="."]
 unique_name_in_owner = true
@@ -37,6 +38,7 @@ window_title = "Open a Directory"
 resizable = true
 mode = 2
 access = 2
+show_hidden_files = true
 
 [node name="AcceptDialog" type="AcceptDialog" parent="."]
 unique_name_in_owner = true
