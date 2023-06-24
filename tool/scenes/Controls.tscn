@@ -13,7 +13,6 @@ script = ExtResource( 1 )
 temp = "res://assets/temp_tiles.png"
 thick = "res://assets/thick.png"
 anim = [ "res://assets/WaterTileAnim1.png", "res://assets/WaterTileAnim2.png", "res://assets/WaterTileAnim3.png", "res://assets/WaterTileAnim4.png", "res://assets/WaterTileAnim5.png", "res://assets/WaterTileAnim6.png", "res://assets/WaterTileAnim7.png", "res://assets/WaterTileAnim8.png", "res://assets/WaterTileAnim9.png", "res://assets/WaterTileAnim10.png", "res://assets/WaterTileAnim11.png", "res://assets/WaterTileAnim12.png" ]
-curr_file = "res://assets/temp_tiles.png"
 
 [node name="FileDialog" type="FileDialog" parent="."]
 unique_name_in_owner = true
@@ -396,6 +395,7 @@ margin_right = 148.0
 margin_bottom = 32.0
 size_flags_horizontal = 10
 num = 10
+min_num = 0
 
 [node name="ToggleVisibility" type="Button" parent="H"]
 unique_name_in_owner = true

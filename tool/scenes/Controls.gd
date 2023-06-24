@@ -16,10 +16,10 @@ export(String, FILE, "*.png") var temp
 export(String, FILE, "*.png") var thick
 export(Array, String, FILE, "*.png") var anim
 
-export(String, FILE, "*.png") var curr_file
+export(Array, String, FILE, "*.png") var curr_files
 
 var file := File.new()
-var modified_time := -1
+var modified_times := {}
 var curr_fps := 10
 
 var download_file := ""
@@ -70,8 +70,8 @@ func load_animated_texture_paths(paths: PoolStringArray) -> void:
 	anim_texture.frames = paths.size()
 	anim_texture.fps = curr_fps
 	current_file.text = paths[0].get_file()
-	curr_file = paths[0]
-	modified_time = -1
+	curr_files = paths
+	modified_times.clear()
 	for i in len(paths):
 		var texture := get_texture(paths[i])
 		anim_texture.set_frame_texture(i, texture)
@@ -85,10 +85,10 @@ func load_texture_path(path: String) -> void:
 		accept_dialog.popup_centered()
 		return
 	fps.hide()
-	curr_file = path
+	curr_files = [path]
 	current_file.text = path.get_file()
 	var texture := get_texture(path)
-	modified_time = -1
+	modified_times.clear()
 	tiles_texture.texture = texture
 	set_real_texture_size()
 	emit_signal("file_changed", texture)
@@ -146,12 +146,19 @@ func _on_WindowOnTop_toggled(button_pressed: bool) -> void:
 
 
 func _on_GetModifiedTime_timeout() -> void:
-	var new_modified_time := file.get_modified_time(curr_file)
-	if modified_time >= 0 and new_modified_time != modified_time:
-		var updated_texture := get_texture(curr_file)
-		tiles_texture.texture = updated_texture
-		emit_signal("file_changed", updated_texture)
-	modified_time = new_modified_time
+	for i in len(curr_files):
+		var curr_file: String = curr_files[i]
+		var new_modified_time := file.get_modified_time(curr_file)
+		if curr_file in modified_times and \
+				modified_times[curr_file] != new_modified_time:
+			if tiles_texture.texture is AnimatedTexture:
+				tiles_texture.texture.set_frame_texture(
+						i, get_texture(curr_file))
+			else:
+				var updated_texture := get_texture(curr_file)
+				tiles_texture.texture = updated_texture
+				emit_signal("file_changed", updated_texture)
+		modified_times[curr_file] = new_modified_time
 
 
 func _on_CellSizeX_number_changed(number: int) -> void:
