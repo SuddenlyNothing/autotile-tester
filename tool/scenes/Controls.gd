@@ -107,18 +107,28 @@ func set_real_texture_size() -> void:
 	texture_cell_size = real_size / Vector2(12, 4)
 
 
-func _on_files_dropped(files: PoolStringArray, screen: int) -> void:
+func auto_update_cell_subtile_size() -> void:
+	var new_size: Vector2 = tiles_texture.texture.get_size() / Vector2(12, 4)
+	cell_size_x.num = new_size.x
+	cell_size_y.num = new_size.y
+	subtile_size_x.num = new_size.x
+	subtile_size_y.num = new_size.y
+
+
+func load_files(files: PoolStringArray) -> void:
 	if files.size() == 1:
 		load_texture_path(files[0])
 	else:
 		load_animated_texture_paths(files)
+	auto_update_cell_subtile_size()
 
 
-func _on_FileDialog_files_selected(paths: PoolStringArray) -> void:
-	if paths.size() == 1:
-		load_texture_path(paths[0])
-	else:
-		load_animated_texture_paths(paths)
+func _on_files_dropped(files: PoolStringArray, screen: int) -> void:
+	load_files(files)
+
+
+func _on_FileDialog_files_selected(files: PoolStringArray) -> void:
+	load_files(files)
 
 
 func _on_ChangeFile_pressed() -> void:
