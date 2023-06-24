@@ -339,8 +339,9 @@ margin_bottom = 417.0
 [node name="Label" type="Label" parent="H/Controls/M/V/Download"]
 margin_right = 148.0
 margin_bottom = 14.0
-text = "Download Examples"
+text = "Save and Load"
 align = 1
+autowrap = true
 
 [node name="H" type="HBoxContainer" parent="H/Controls/M/V/Download"]
 margin_top = 18.0
@@ -376,7 +377,6 @@ custom_constants/separation = 0
 
 [node name="FPS" type="HBoxContainer" parent="H/Controls/M/V"]
 unique_name_in_owner = true
-visible = false
 margin_top = 437.0
 margin_right = 148.0
 margin_bottom = 469.0

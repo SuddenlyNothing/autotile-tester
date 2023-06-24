@@ -247,12 +247,32 @@ func _on_SaveFile_dir_selected(dir: String) -> void:
 	var d := Directory.new()
 	match download_file:
 		"temp":
-			d.copy(temp, dir.plus_file(temp.get_file()))
+			var new_filepath := dir.plus_file(temp.get_file())
+			d.copy(temp, new_filepath)
+			load_texture_path(new_filepath)
+			cell_size_x.num = 24
+			cell_size_y.num = 24
+			subtile_size_x.num = 24
+			subtile_size_y.num = 24
 		"thick":
-			d.copy(thick, dir.plus_file(thick.get_file()))
+			var new_filepath := dir.plus_file(thick.get_file())
+			d.copy(thick, new_filepath)
+			load_texture_path(new_filepath)
+			cell_size_x.num = 64
+			cell_size_y.num = 64
+			subtile_size_x.num = 64
+			subtile_size_y.num = 88
 		"anim":
+			var new_filepaths := []
 			for file in anim:
-				d.copy(file, dir.plus_file(file.get_file()))
+				var new_filepath := dir.plus_file(file.get_file())
+				d.copy(file, new_filepath)
+				new_filepaths.append(new_filepath)
+			load_animated_texture_paths(new_filepaths)
+			cell_size_x.num = 48
+			cell_size_y.num = 48
+			subtile_size_x.num = 48
+			subtile_size_y.num = 48
 
 
 func _on_AutotileTester_highlight_tile(coord: Vector2) -> void:
@@ -267,6 +287,7 @@ func _draw() -> void:
 		return
 	var topleft: Vector2 = tiles_texture.rect_global_position - \
 			Vector2(real_size.x, 0)
-	var rect := Rect2(topleft + highlight_tile * texture_cell_size, texture_cell_size)
+	var rect := Rect2(topleft + highlight_tile * texture_cell_size,
+			texture_cell_size)
 	draw_rect(rect, Color(0.6, 0.1, 0.9, 0.3))
 	draw_rect(rect, Color.purple, false)
