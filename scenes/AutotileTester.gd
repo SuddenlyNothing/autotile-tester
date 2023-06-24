@@ -1,5 +1,7 @@
 extends TilePlacerStateMachine
 
+signal highlight_tile(coord)
+
 const GridLighter := preload("res://scenes/editor/GridLighter.tscn")
 const DIRECTIONS := [
 	Vector2.UP,
@@ -17,7 +19,7 @@ var MIN_ZOOM_LENGTH := MIN_ZOOM.length()
 var MAX_ZOOM_LENGTH := MAX_ZOOM.length()
 
 var lights := {}
-var tile_light_energy := 1.2
+var tile_light_energy := 0.7
 var tile_light_enabled := true
 
 var has_previous_pos := false
@@ -32,6 +34,7 @@ onready var texture := tile_set.tile_get_texture(0)
 onready var hint_draw := $HintDraw
 onready var grid_sprite := $Grid/GridSprite
 onready var camera := $Camera2D
+onready var highlight_tile: Node2D = $HighlightTile
 
 
 func _ready() -> void:
@@ -41,6 +44,9 @@ func _ready() -> void:
 	add_state("rect_draw")
 	add_state("rect_erase")
 	call_deferred("set_state", "idle")
+	for i in get_used_cells():
+		draw_light(i)
+
 
 
 # Return value will be used to change state.
@@ -116,8 +122,15 @@ func _unhandled_input(event: InputEvent) -> void:
 		panning = true
 	elif event.is_action_released("pan", true):
 		panning = false
-	elif panning and event is InputEventMouseMotion:
-		camera.position -= event.relative * camera.zoom
+	elif event is InputEventMouseMotion:
+		if panning:
+			camera.position -= event.relative * camera.zoom
+		else:
+			var mouse_pos := world_to_map(get_global_mouse_position())
+			if get_cellv(mouse_pos) == 0:
+				set_highlight_tile(mouse_pos)
+			else:
+				stop_highlight()
 	elif event is InputEventMouseButton:
 		event.factor = 1 * camera.zoom.x
 		if event.button_index == 4:
@@ -137,6 +150,21 @@ func _unhandled_input(event: InputEvent) -> void:
 					max_cell_size_factor)
 			camera.zoom = new_zoom
 			grid_sprite.zoom = camera.zoom
+
+
+func set_highlight_tile(pos: Vector2) -> void:
+	highlight_tile.highlighting = true
+	highlight_tile.highlight_coord = pos
+	if not highlight_tile.disabled:
+		yield(get_tree(), "idle_frame")
+		var coord := get_cell_autotile_coord(pos.x,
+				pos.y)
+		emit_signal("highlight_tile", coord)
+
+
+func stop_highlight() -> void:
+	highlight_tile.highlighting = false
+	emit_signal("highlight_tile", Vector2.LEFT)
 
 
 func get_world_rect_bounds(p1: Vector2, p2: Vector2) -> Rect2:
@@ -194,6 +222,11 @@ func draw_rect_tiles(p1: Vector2, p2: Vector2, tile: int) -> void:
 	for x in range(min(p1.x, p2.x), max(p1.x, p2.x) + 1):
 		for y in range(min(p1.y, p2.y), max(p1.y, p2.y) + 1):
 			set_cellv(Vector2(x, y), tile)
+	if tile >= 0:
+		var mouse_pos := world_to_map(get_global_mouse_position())
+		set_highlight_tile(mouse_pos)
+	else:
+		stop_highlight()
 	update_bitmask_region()
 
 
@@ -243,18 +276,24 @@ func get_tiles_between_points(p1: Vector2, p2: Vector2) -> Array:
 func set_cellv(pos: Vector2, tile: int, flip_x: bool = false,
 		flip_y: bool = false, transpose: bool = false,
 		autotile_coord: Vector2 = Vector2()) -> void:
+	.set_cellv(pos, tile, flip_x, flip_y, transpose, autotile_coord)
 	if tile == -1:
 		if pos in lights:
 			lights[pos].queue_free()
 			lights.erase(pos)
+			stop_highlight()
 	elif not pos in lights:
-		var gl := GridLighter.instance()
-		gl.position = map_to_world(pos) + cell_size / 2
-		gl.enabled = tile_light_enabled
-		gl.energy = tile_light_energy
-		add_child(gl)
-		lights[pos] = gl
-	.set_cellv(pos, tile, flip_x, flip_y, transpose, autotile_coord)
+		draw_light(pos)
+		set_highlight_tile(pos)
+
+
+func draw_light(pos: Vector2) -> void:
+	var gl := GridLighter.instance()
+	gl.position = map_to_world(pos) + cell_size / 2
+	gl.enabled = tile_light_enabled
+	gl.energy = tile_light_energy
+	add_child(gl)
+	lights[pos] = gl
 
 
 func _on_Controls_file_changed(texture) -> void:
@@ -287,8 +326,12 @@ func _on_Controls_cell_size_changed(p_cell_size: Vector2) -> void:
 	camera.position *= ratio
 	camera.zoom *= ratio
 	cell_size = p_cell_size
+	
+	highlight_tile.cell_size = p_cell_size
+	
 	grid_sprite.cell_size = p_cell_size
 	grid_sprite.zoom = camera.zoom
+	
 	var light_scale := max(p_cell_size.x, p_cell_size.y) / 24
 	grid_lighter.texture_scale = light_scale
 	for pos in lights:
@@ -297,5 +340,7 @@ func _on_Controls_cell_size_changed(p_cell_size: Vector2) -> void:
 
 
 func _on_Controls_subtile_size_changed(subtile_size: Vector2) -> void:
+	highlight_tile.subtile_size = subtile_size
+	
 	tile_set.autotile_set_size(0, subtile_size)
 	update_bitmask_region()

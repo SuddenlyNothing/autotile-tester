@@ -23,6 +23,9 @@ var modified_time := -1
 var curr_fps := 10
 
 var download_file := ""
+var real_size := Vector2()
+var texture_cell_size := Vector2()
+var highlight_tile := Vector2.LEFT
 
 export var cell_size := Vector2(24, 24)
 export var subtile_size := Vector2(24, 24)
@@ -43,6 +46,7 @@ onready var save_file: FileDialog = $"%SaveFile"
 
 func _ready() -> void:
 	get_tree().connect("files_dropped", self, "_on_files_dropped")
+	set_real_texture_size()
 
 
 func get_texture(path: String) -> ImageTexture:
@@ -71,6 +75,7 @@ func load_animated_texture_paths(paths: PoolStringArray) -> void:
 		var texture := get_texture(paths[i])
 		anim_texture.set_frame_texture(i, texture)
 	tiles_texture.texture = anim_texture
+	set_real_texture_size()
 	emit_signal("file_changed", anim_texture)
 
 
@@ -84,11 +89,21 @@ func load_texture_path(path: String) -> void:
 	var texture := get_texture(path)
 	modified_time = -1
 	tiles_texture.texture = texture
+	set_real_texture_size()
 	emit_signal("file_changed", texture)
 
 
-func load_texture(texture: Texture) -> void:
-	pass
+func set_real_texture_size() -> void:
+	var tex_size: Vector2 = tiles_texture.texture.get_size()
+	var ratio := tex_size.x / tex_size.y
+	
+	if tex_size.x > tex_size.y:
+		real_size = Vector2(tiles_texture.rect_size.x,
+				tiles_texture.rect_size.x / ratio)
+	else:
+		real_size = Vector2(tiles_texture.rect_size.y * ratio,
+				tiles_texture.rect_size.y)
+	texture_cell_size = real_size / Vector2(12, 4)
 
 
 func _on_files_dropped(files: PoolStringArray, screen: int) -> void:
@@ -106,7 +121,7 @@ func _on_FileDialog_files_selected(paths: PoolStringArray) -> void:
 
 
 func _on_ChangeFile_pressed() -> void:
-	file_dialog.popup()
+	file_dialog.popup_centered()
 
 
 func _on_MouseGrid_toggled(button_pressed: bool) -> void:
@@ -197,17 +212,17 @@ func _on_PresetsAnim_pressed() -> void:
 
 func _on_DownloadTemp_pressed() -> void:
 	download_file = "temp"
-	save_file.popup()
+	save_file.popup_centered()
 
 
 func _on_DownloadThick_pressed() -> void:
 	download_file = "thick"
-	save_file.popup()
+	save_file.popup_centered()
 
 
 func _on_DownloadAnim_pressed() -> void:
 	download_file = "anim"
-	save_file.popup()
+	save_file.popup_centered()
 
 
 func _on_SaveFile_dir_selected(dir: String) -> void:
@@ -220,3 +235,20 @@ func _on_SaveFile_dir_selected(dir: String) -> void:
 		"anim":
 			for file in anim:
 				d.copy(file, dir.plus_file(file.get_file()))
+
+
+func _on_AutotileTester_highlight_tile(coord: Vector2) -> void:
+	if highlight_tile == coord:
+		return
+	highlight_tile = coord
+	update()
+
+
+func _draw() -> void:
+	if highlight_tile.x < 0 or highlight_tile.y < 0:
+		return
+	var rect := Rect2(tiles_texture.rect_global_position - \
+			Vector2(real_size.x, 0) + highlight_tile * texture_cell_size,
+			texture_cell_size)
+	draw_rect(rect, Color(0.6, 0.1, 0.9, 0.3))
+	draw_rect(rect, Color.purple, false)

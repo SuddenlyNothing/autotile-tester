@@ -11,6 +11,5 @@ layer = 0
 [node name="GridSprite" type="ParallaxLayer" parent="."]
 light_mask = 2
 material = SubResource( 4 )
-motion_mirroring = Vector2( 1032, 600 )
 script = ExtResource( 2 )
-camera_size = Vector2( 1032, 600 )
+camera_size = Vector2( 0, 0 )

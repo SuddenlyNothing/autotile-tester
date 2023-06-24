@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://scenes/editor/tester_tileset.tres" type="TileSet" id=1]
 [ext_resource path="res://scenes/AutotileTester.gd" type="Script" id=2]
 [ext_resource path="res://scenes/editor/GridLighter.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/editor/Grid.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/HintDraw.gd" type="Script" id=5]
+[ext_resource path="res://scenes/HighlightTile.gd" type="Script" id=6]
 
 [node name="AutotileTester" type="TileMap"]
 tile_set = ExtResource( 1 )
@@ -24,3 +25,6 @@ script = ExtResource( 5 )
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2( 250, 250 )
 current = true
+
+[node name="HighlightTile" type="Node2D" parent="."]
+script = ExtResource( 6 )

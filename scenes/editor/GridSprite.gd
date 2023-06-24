@@ -9,6 +9,7 @@ export(Vector2) var zoom := Vector2.ONE setget set_zoom
 
 
 func _ready() -> void:
+	set_camera_size(get_viewport_rect().size)
 	get_tree().root.connect("size_changed", self, "_on_viewport_size_changed")
 
 
@@ -46,4 +47,3 @@ func set_camera_size(val: Vector2) -> void:
 
 func _on_viewport_size_changed() -> void:
 	set_camera_size(get_viewport_rect().size)
-	update()

@@ -17,9 +17,9 @@ curr_file = "res://assets/temp_tiles.png"
 
 [node name="FileDialog" type="FileDialog" parent="."]
 unique_name_in_owner = true
-anchor_right = 1.0
-anchor_bottom = 1.0
-rect_min_size = Vector2( 400, 140 )
+margin_right = 420.0
+margin_bottom = 300.0
+rect_min_size = Vector2( 420, 300 )
 popup_exclusive = true
 window_title = "Open File(s)"
 resizable = true
@@ -29,9 +29,9 @@ filters = PoolStringArray( "*.png" )
 
 [node name="SaveFile" type="FileDialog" parent="."]
 unique_name_in_owner = true
-anchor_right = 1.0
-anchor_bottom = 1.0
-rect_min_size = Vector2( 400, 140 )
+margin_right = 420.0
+margin_bottom = 300.0
+rect_min_size = Vector2( 420, 300 )
 popup_exclusive = true
 window_title = "Open a Directory"
 resizable = true
@@ -42,6 +42,7 @@ access = 2
 unique_name_in_owner = true
 margin_right = 83.0
 margin_bottom = 58.0
+popup_exclusive = true
 dialog_text = "Only *.png files are allowed"
 
 [node name="H" type="HBoxContainer" parent="."]
@@ -408,23 +409,29 @@ wait_time = 0.2
 autostart = true
 
 [node name="M2" type="MarginContainer" parent="."]
+show_behind_parent = true
 anchor_left = 1.0
 anchor_right = 1.0
-margin_left = -200.0
+margin_right = 200.0
 margin_bottom = 200.0
 rect_min_size = Vector2( 200, 200 )
+rect_scale = Vector2( -1, 1 )
 mouse_filter = 2
 
 [node name="TilesTexture" type="TextureRect" parent="M2"]
 unique_name_in_owner = true
+show_behind_parent = true
 margin_right = 200.0
 margin_bottom = 200.0
+grow_horizontal = 0
+grow_vertical = 0
 mouse_filter = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 11
 size_flags_vertical = 3
 texture = ExtResource( 2 )
 expand = true
 stretch_mode = 5
+flip_h = true
 
 [connection signal="files_selected" from="FileDialog" to="." method="_on_FileDialog_files_selected"]
 [connection signal="dir_selected" from="SaveFile" to="." method="_on_SaveFile_dir_selected"]
